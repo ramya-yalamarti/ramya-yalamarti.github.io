@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ramya Yalamarthi - Software Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAFAF8;
+    --bg-card: #FFFFFF;
+    --text-primary: #1a1a1a;
+    --text-secondary: #6b6b6b;
+    --text-muted: #9a9a9a;
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1d4ed8;
+    --border: #e8e8e4;
+    --border-hover: #d0d0cc;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.08);
+    --radius: 16px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    background: rgba(250, 250, 248, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    transition: box-shadow 0.3s ease;
+  }
+  nav .nav-inner {
+    max-width: 1100px; margin: 0 auto; padding: 16px 32px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  nav .logo {
+    font-family: 'DM Serif Display', serif; font-size: 22px;
+    color: var(--text-primary); text-decoration: none; letter-spacing: -0.5px;
+  }
+  nav .nav-links { display: flex; gap: 32px; list-style: none; }
+  nav .nav-links a {
+    text-decoration: none; color: var(--text-secondary); font-size: 14px;
+    font-weight: 500; letter-spacing: 0.3px; transition: color 0.3s ease; position: relative;
+  }
+  nav .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; width: 0;
+    height: 2px; background: var(--accent); transition: width 0.3s ease; border-radius: 2px;
+  }
+  nav .nav-links a:hover { color: var(--accent); }
+  nav .nav-links a:hover::after { width: 100%; }
+
+  section { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center;
+    justify-content: center; position: relative;
+  }
+  .hero-content { text-align: center; max-width: 750px; }
+  .hero-badge {
+    display: inline-block; padding: 8px 20px; background: var(--accent-light);
+    color: var(--accent); font-size: 13px; font-weight: 600; border-radius: 100px;
+    letter-spacing: 1px; text-transform: uppercase; margin-bottom: 28px;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif; font-size: clamp(48px, 7vw, 80px);
+    line-height: 1.05; letter-spacing: -2px; color: var(--text-primary);
+    margin-bottom: 24px; animation: fadeUp 0.8s ease 0.4s both;
+  }
+  .hero h1 .accent-dot { color: var(--accent); }
+  .hero p {
+    font-size: 18px; color: var(--text-secondary); line-height: 1.8;
+    max-width: 580px; margin: 0 auto 40px; font-weight: 300;
+    animation: fadeUp 0.8s ease 0.6s both;
+  }
+  .hero-cta {
+    display: flex; gap: 16px; justify-content: center;
+    animation: fadeUp 0.8s ease 0.8s both;
+  }
+  .btn {
+    padding: 14px 32px; border-radius: 100px; font-size: 14px; font-weight: 600;
+    font-family: 'Outfit', sans-serif; text-decoration: none; cursor: pointer;
+    transition: all 0.3s ease; border: none; letter-spacing: 0.3px;
+  }
+  .btn-primary {
+    background: var(--accent); color: white;
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+  }
+  .btn-primary:hover {
+    background: var(--accent-dark); transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(37, 99, 235, 0.4);
+  }
+  .btn-secondary { background: transparent; color: var(--text-primary); border: 1.5px solid var(--border); }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  .scroll-indicator {
+    position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+    animation: fadeUp 0.8s ease 1.2s both;
+  }
+  .scroll-indicator .mouse {
+    width: 26px; height: 40px; border: 2px solid var(--border-hover);
+    border-radius: 13px; position: relative;
+  }
+  .scroll-indicator .mouse::after {
+    content: ''; width: 4px; height: 8px; background: var(--text-muted);
+    border-radius: 2px; position: absolute; top: 8px; left: 50%;
+    transform: translateX(-50%); animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  /* SECTION STYLES */
+  .section-label {
+    font-size: 12px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 16px; display: block;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif; font-size: clamp(32px, 4vw, 44px);
+    letter-spacing: -1px; margin-bottom: 32px; line-height: 1.15;
+  }
+
+  /* ABOUT */
+  .about { padding-top: 120px; padding-bottom: 80px; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+  .about-text p { color: var(--text-secondary); font-size: 16px; margin-bottom: 20px; font-weight: 300; }
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .stat-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 28px; transition: all 0.4s ease;
+  }
+  .stat-card:hover { border-color: var(--accent); box-shadow: var(--shadow-md); transform: translateY(-4px); }
+  .stat-number {
+    font-family: 'DM Serif Display', serif; font-size: 36px;
+    color: var(--accent); line-height: 1; margin-bottom: 8px;
+  }
+  .stat-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
+  /* SKILLS */
+  .skills { padding-top: 80px; padding-bottom: 80px; }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 40px; }
+  .skill-category {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 32px; transition: all 0.4s ease;
+    position: relative; overflow: hidden;
+  }
+  .skill-category::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+    background: var(--accent); opacity: 0; transition: opacity 0.3s ease;
+  }
+  .skill-category:hover { border-color: var(--accent); box-shadow: var(--shadow-md); transform: translateY(-4px); }
+  .skill-category:hover::before { opacity: 1; }
+  .skill-icon {
+    width: 44px; height: 44px; background: var(--accent-light); border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 18px;
+  }
+  .skill-category h3 { font-size: 16px; font-weight: 600; margin-bottom: 14px; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .skill-tag {
+    padding: 6px 14px; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 100px; font-size: 12.5px; font-weight: 500; color: var(--text-secondary);
+    transition: all 0.3s ease; font-family: 'JetBrains Mono', monospace;
+  }
+  .skill-tag:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+
+  /* EXPERIENCE */
+  .experience { padding-top: 80px; padding-bottom: 80px; }
+  .timeline { margin-top: 40px; position: relative; }
+  .timeline::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 2px; background: var(--border);
+  }
+  .timeline-item { position: relative; padding-left: 40px; margin-bottom: 40px; }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -5px; top: 8px; width: 12px; height: 12px;
+    background: var(--accent); border-radius: 50%; border: 3px solid var(--bg);
+    box-shadow: 0 0 0 2px var(--accent); z-index: 1;
+  }
+  .timeline-item.current::before { animation: pulse 2s ease-in-out infinite; }
+  .timeline-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    flex-wrap: wrap; gap: 8px; margin-bottom: 8px;
+  }
+  .timeline-role { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
+  .timeline-date {
+    font-size: 13px; font-weight: 500; color: var(--accent); background: var(--accent-light);
+    padding: 4px 14px; border-radius: 100px; white-space: nowrap;
+  }
+  .timeline-company { font-size: 14px; color: var(--text-muted); font-weight: 500; margin-bottom: 16px; }
+  .timeline-bullets { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .timeline-bullets li {
+    font-size: 14.5px; color: var(--text-secondary); line-height: 1.7;
+    font-weight: 300; padding-left: 20px; position: relative;
+  }
+  .timeline-bullets li::before { content: '\2192'; position: absolute; left: 0; color: var(--accent); font-weight: 600; }
+  .timeline-bullets strong { color: var(--text-primary); font-weight: 600; }
+
+  /* PROJECTS */
+  .projects { padding-top: 80px; padding-bottom: 80px; }
+  .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; }
+  .project-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 32px; transition: all 0.4s ease; overflow: hidden;
+  }
+  .project-card:hover { border-color: var(--accent); box-shadow: var(--shadow-lg); transform: translateY(-6px); }
+  .project-platform {
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+  }
+  .project-card h3 { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 12px; }
+  .project-card p { font-size: 14px; color: var(--text-secondary); font-weight: 300; line-height: 1.7; margin-bottom: 20px; }
+  .project-tech { display: flex; flex-wrap: wrap; gap: 6px; }
+  .project-tech span {
+    padding: 4px 12px; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 100px; font-size: 11.5px; font-family: 'JetBrains Mono', monospace;
+    color: var(--text-muted); font-weight: 500;
+  }
+
+  /* EDUCATION */
+  .education { padding-top: 80px; padding-bottom: 80px; }
+  .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; }
+  .edu-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 28px; transition: all 0.4s ease;
+  }
+  .edu-card:hover { border-color: var(--accent); box-shadow: var(--shadow-md); transform: translateY(-4px); }
+  .edu-type { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .edu-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+  .edu-school { font-size: 14px; color: var(--text-secondary); margin-bottom: 4px; }
+  .edu-date { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+  .certs-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+  .cert-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 24px; display: flex;
+    align-items: center; gap: 16px; transition: all 0.4s ease;
+  }
+  .cert-card:hover { border-color: var(--accent); box-shadow: var(--shadow-md); transform: translateY(-4px); }
+  .cert-icon {
+    width: 48px; height: 48px; background: linear-gradient(135deg, #ff9900, #ffb84d);
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 800; color: white; flex-shrink: 0;
+  }
+  .cert-info h4 { font-size: 14px; font-weight: 600; }
+  .cert-info p { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+
+  /* CONTACT */
+  .contact { padding-top: 80px; padding-bottom: 120px; text-align: center; }
+  .contact p { font-size: 17px; color: var(--text-secondary); font-weight: 300; max-width: 500px; margin: 0 auto 40px; }
+  .contact-links { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .contact-link {
+    display: flex; align-items: center; gap: 10px; padding: 14px 28px;
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 100px;
+    text-decoration: none; color: var(--text-primary); font-size: 14px;
+    font-weight: 500; transition: all 0.3s ease;
+  }
+  .contact-link:hover { border-color: var(--accent); color: var(--accent); box-shadow: var(--shadow-md); transform: translateY(-3px); }
+  .contact-link svg { width: 18px; height: 18px; }
+
+  footer {
+    text-align: center; padding: 32px; border-top: 1px solid var(--border);
+    font-size: 13px; color: var(--text-muted);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes scrollPulse { 0%, 100% { opacity: 0.3; transform: translateX(-50%) translateY(0); } 50% { opacity: 1; transform: translateX(-50%) translateY(8px); } }
+  @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 2px var(--accent); } 50% { box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.2); } }
+
+  @media (max-width: 768px) {
+    nav .nav-links { display: none; }
+    section { padding: 0 20px; }
+    .about-grid, .projects-grid, .edu-grid, .certs-row { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .timeline-header { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">RY</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>Ramya<br>Yalamarthi<span class="accent-dot">.</span></h1>
+    <p>Software Engineer crafting cloud-native platforms, Agentic AI systems, and high-throughput data pipelines on AWS.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn btn-primary">Get in Touch</a>
+      <a href="#experience" class="btn btn-secondary">View Work</a>
+    </div>
+  </div>
+  <div class="scroll-indicator"><div class="mouse"></div></div>
+</section>
+
+<section class="about" id="about">
+  <span class="section-label">About</span>
+  <div class="about-grid">
+    <div class="about-text">
+      <h2 class="section-title">Building systems that scale<span class="accent-dot">.</span></h2>
+      <p>I'm a full-stack Software Engineer based in Seattle with 3+ years of experience building cloud-native products. My work spans from architecting 0-to-1 Agentic AI platforms to optimizing enterprise data pipelines.</p>
+      <p>Currently at People Tech, I lead the development of a multi-agent NL-to-SQL analytics platform on AWS, enabling non-technical stakeholders to query enterprise data using natural language. Previously, I've built fintech platforms, self-serve analytics dashboards, and enterprise SAP integrations.</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-card">
+        <div class="stat-number">3+</div>
+        <div class="stat-label">Years of Experience</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">4</div>
+        <div class="stat-label">Companies</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">2</div>
+        <div class="stat-label">AWS Certifications</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">20+</div>
+        <div class="stat-label">KPIs Tracked at Scale</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="skills" id="skills">
+  <span class="section-label">Technical Skills</span>
+  <h2 class="section-title">Tools I work with<span class="accent-dot">.</span></h2>
+  <div class="skills-grid">
+    <div class="skill-category">
+      <div class="skill-icon">&lt;/&gt;</div>
+      <h3>Languages</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">Java</span><span class="skill-tag">Python</span>
+        <span class="skill-tag">JavaScript</span><span class="skill-tag">TypeScript</span>
+        <span class="skill-tag">Go</span><span class="skill-tag">C</span>
+        <span class="skill-tag">C++</span><span class="skill-tag">SQL</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-icon">&#9639;</div>
+      <h3>Frontend</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">React</span><span class="skill-tag">Angular</span>
+        <span class="skill-tag">HTML</span><span class="skill-tag">CSS</span>
+        <span class="skill-tag">Bootstrap</span><span class="skill-tag">Micro Frontends</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-icon">&#9881;</div>
+      <h3>Backend</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">Node.js</span><span class="skill-tag">Spring Boot</span>
+        <span class="skill-tag">REST APIs</span><span class="skill-tag">Microservices</span>
+        <span class="skill-tag">Apache Kafka</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-icon">&#9729;</div>
+      <h3>Cloud &amp; DevOps</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">AWS Lambda</span><span class="skill-tag">Bedrock</span>
+        <span class="skill-tag">DynamoDB</span><span class="skill-tag">Redshift</span>
+        <span class="skill-tag">S3</span><span class="skill-tag">CloudWatch</span>
+        <span class="skill-tag">GCP</span><span class="skill-tag">Docker</span>
+        <span class="skill-tag">Kubernetes</span><span class="skill-tag">Terraform</span>
+        <span class="skill-tag">Jenkins</span><span class="skill-tag">CI/CD</span>
+        <span class="skill-tag">Git</span><span class="skill-tag">GitHub Actions</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-icon">&#9776;</div>
+      <h3>Data &amp; Tools</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">MySQL</span><span class="skill-tag">MongoDB</span>
+        <span class="skill-tag">Oracle SQL</span><span class="skill-tag">Tableau</span>
+        <span class="skill-tag">Power BI</span><span class="skill-tag">Langfuse</span>
+        <span class="skill-tag">Ab Initio</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="experience" id="experience">
+  <span class="section-label">Experience</span>
+  <h2 class="section-title">Where I've worked<span class="accent-dot">.</span></h2>
+  <div class="timeline">
+    <div class="timeline-item current">
+      <div class="timeline-header">
+        <span class="timeline-role">Software Development Engineer</span>
+        <span class="timeline-date">Nov 2025 - Present</span>
+      </div>
+      <div class="timeline-company">People Tech - Seattle, USA</div>
+      <ul class="timeline-bullets">
+        <li>Architected a <strong>0-to-1 multi-agent NL-to-SQL analytics platform</strong> on AWS using Python, Bedrock AgentCore, MCP tooling, DynamoDB, and Redshift Data API, enabling non-technical stakeholders to query enterprise data through natural language.</li>
+        <li>Designed a stateless request router with session/tenant/role resolution, intelligent FAQ vs NL-to-SQL routing, and inline policy-bundle enforcement.</li>
+        <li>Scaled agent orchestration to support <strong>1,000+ concurrent queries</strong> through optimized concurrency control and Redshift/DynamoDB access patterns, <strong>cutting median latency by 25-30%</strong>.</li>
+        <li>Integrated end-to-end observability with Langfuse, CloudWatch, and structured JSON logging for tracing dashboards and proactive error monitoring.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-header">
+        <span class="timeline-role">Sr. Product Engineer</span>
+        <span class="timeline-date">Jul 2022 - Nov 2023</span>
+      </div>
+      <div class="timeline-company">Simplilearn - Bangalore, India</div>
+      <ul class="timeline-bullets">
+        <li>Spearheaded the design of self-serve Tableau and Power BI dashboards on transactional and event data, tracking <strong>20+ product KPIs</strong> across 5+ customer segments.</li>
+        <li>Eliminated <strong>~40% of ad-hoc analytics requests</strong> and improved stakeholder reporting time by <strong>30%</strong> by standardizing metric definitions and democratizing data access.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-header">
+        <span class="timeline-role">Software Engineer</span>
+        <span class="timeline-date">Jan 2021 - May 2022</span>
+      </div>
+      <div class="timeline-company">Kristal.AI - Bangalore, India</div>
+      <ul class="timeline-bullets">
+        <li>Built and shipped features for a digital private wealth platform serving investors across Singapore, Hong Kong, India, and UAE using React, Node.js, and REST APIs.</li>
+        <li>Developed microservices for portfolio management and investment execution workflows, improving transaction processing reliability across multi-currency environments.</li>
+        <li>Implemented real-time portfolio tracking dashboards enabling investors to monitor performance across equities, ETFs, and alternative asset classes.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-header">
+        <span class="timeline-role">Software Developer</span>
+        <span class="timeline-date">Jun 2019 - Nov 2020</span>
+      </div>
+      <div class="timeline-company">Accenture - Hyderabad, India</div>
+      <ul class="timeline-bullets">
+        <li>Developed and optimized Ab Initio data-processing pipelines and SAP ABAP interfaces across ECC and CRM systems, <strong>reducing batch processing time by 30%</strong>.</li>
+        <li>Automated configuration sync workflows between ECC and MDG, <strong>reducing incident volume by 40%</strong> and improving platform stability.</li>
+        <li>Owned production runs and incident handling under strict SLAs, maintaining <strong>~95% stakeholder satisfaction</strong>.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="projects" id="projects">
+  <span class="section-label">Projects</span>
+  <h2 class="section-title">Things I've built<span class="accent-dot">.</span></h2>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="project-platform">GCP</div>
+      <h3>Speech &amp; Sentiment Recognition</h3>
+      <p>A multi-model LLM pipeline that transcribes user speech to text and performs real-time sentiment analysis using cloud APIs.</p>
+      <div class="project-tech">
+        <span>Python</span><span>GCP</span><span>LLM</span><span>Cloud APIs</span>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-platform">iOS / watchOS</div>
+      <h3>Speech-to-Text Notes</h3>
+      <p>A cross-device notes application that converts speech to text and syncs notes to a cloud backend across all logged-in devices.</p>
+      <div class="project-tech">
+        <span>Swift</span><span>iOS</span><span>watchOS</span><span>REST APIs</span><span>Cloud Storage</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="education" id="education">
+  <span class="section-label">Education &amp; Certifications</span>
+  <h2 class="section-title">Background<span class="accent-dot">.</span></h2>
+  <div class="edu-grid">
+    <div class="edu-card">
+      <div class="edu-type">Master's Degree</div>
+      <h3>M.S. Information Technology</h3>
+      <div class="edu-school">Florida Atlantic University, Florida</div>
+      <div class="edu-date">Jan 2024 - Aug 2025</div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-type">Bachelor's Degree</div>
+      <h3>B.Tech Computer Science</h3>
+      <div class="edu-school">JNTU, Hyderabad, India</div>
+      <div class="edu-date">Aug 2015 - May 2019</div>
+    </div>
+  </div>
+  <div class="certs-row">
+    <div class="cert-card">
+      <div class="cert-icon">AWS</div>
+      <div class="cert-info">
+        <h4>AWS Certified Cloud Practitioner</h4>
+        <p>Amazon Web Services</p>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">AWS</div>
+      <div class="cert-info">
+        <h4>AWS Certified Developer - Associate</h4>
+        <p>Amazon Web Services</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <span class="section-label">Contact</span>
+  <h2 class="section-title">Let's connect<span class="accent-dot">.</span></h2>
+  <p>I'm currently open to new opportunities. Feel free to reach out.</p>
+  <div class="contact-links">
+    <a href="/cdn-cgi/l/email-protection#eb998a86928a8a928a878a868a999f82ab8c868a8287c5888486" class="contact-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+      <span class="__cf_email__" data-cfemail="8af8ebe7f3ebebf3ebe6ebe7ebf8fee3caede7ebe3e6a4e9e5e7">[email&#160;protected]</span>
+    </a>
+    <a href="https://github.com/ramya-yalamarti" target="_blank" class="contact-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+      github.com/ramya-yalamarti
+    </a>
+    <a href="tel:+13094398617" class="contact-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      309-439-8617
+    </a>
+    <a href="#" class="contact-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Seattle, WA
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 Ramya Yalamarthi. Built with care.</p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  window.addEvent
