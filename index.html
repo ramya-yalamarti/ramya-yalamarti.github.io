@@ -134,6 +134,12 @@
   .about { padding-top: 120px; padding-bottom: 80px; }
   .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
   .about-text p { color: var(--text-secondary); font-size: 16px; margin-bottom: 20px; font-weight: 300; }
+  .avatar {
+    width: 96px; height: 96px; border-radius: 50%; object-fit: cover;
+    object-position: center 20%;
+    border: 3px solid var(--bg-card); box-shadow: 0 6px 24px rgba(0,0,0,0.08), 0 0 0 1px var(--border);
+    margin-bottom: 24px; display: block;
+  }
   .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .stat-card {
     background: var(--bg-card); border: 1px solid var(--border);
@@ -317,6 +323,7 @@
   <span class="section-label">About</span>
   <div class="about-grid">
     <div class="about-text">
+      <img src="avatar.jpg" alt="Ramya Yalamarthi" class="avatar" />
       <h2 class="section-title">Building systems that scale<span class="accent-dot">.</span></h2>
       <p>I'm an AI/ML Engineer based in Seattle with 5+ years of experience designing production-grade generative AI analytics and scalable data platforms. My work spans from architecting multi-agent GenAI systems on AWS Bedrock AgentCore to optimizing enterprise data pipelines.</p>
       <p>Currently at Quest Global, I build resilient RAG and self-healing NL-to-SQL systems that convert natural-language business questions into executable Redshift SQL — cutting analyst query turnaround by 60%. Previously, I've built fintech platforms, self-serve analytics dashboards, and enterprise SAP integrations.</p>
