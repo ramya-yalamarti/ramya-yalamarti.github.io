@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude direct vs. Bedrock: a lock-in problem in disguise &mdash; Ramya Yalamarthi</title>
+<meta name="description" content="Teams pick the Bedrock vs direct Claude API question in an afternoon. The ones who redo it spend a quarter. A reframe: it's not a features question, it's a lock-in question.">
+<meta name="author" content="Ramya Yalamarthi">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Claude direct vs. Bedrock: a lock-in problem in disguise">
+<meta property="og:description" content="Teams pick the Bedrock vs direct Claude API question in an afternoon. The ones who redo it spend a quarter. A reframe: it's not a features question, it's a lock-in question.">
+<meta property="og:url" content="https://ramya-yalamarti.github.io/blog/claude-api-vs-bedrock.html">
+<meta property="og:site_name" content="Ramya Yalamarthi">
+<meta property="article:published_time" content="2026-04-17">
+<meta property="article:author" content="Ramya Yalamarthi">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Claude direct vs. Bedrock: a lock-in problem in disguise">
+<meta name="twitter:description" content="Teams pick the Bedrock vs direct Claude API question in an afternoon. The ones who redo it spend a quarter.">
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAFAF8;
+    --bg-card: #FFFFFF;
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a4a4a;
+    --text-muted: #9a9a9a;
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1d4ed8;
+    --border: #e8e8e4;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.7;
+  }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(250, 250, 248, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav .nav-inner {
+    max-width: 1100px; margin: 0 auto; padding: 16px 32px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  nav .logo {
+    font-family: 'DM Serif Display', serif; font-size: 22px;
+    color: var(--text-primary); text-decoration: none; letter-spacing: -0.5px;
+  }
+  nav .nav-links { display: flex; gap: 32px; list-style: none; }
+  nav .nav-links a {
+    text-decoration: none; color: var(--text-secondary); font-size: 14px;
+    font-weight: 500; letter-spacing: 0.3px; transition: color 0.3s ease;
+  }
+  nav .nav-links a:hover { color: var(--accent); }
+
+  article {
+    max-width: 720px; margin: 0 auto; padding: 80px 32px 120px;
+  }
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--text-muted); text-decoration: none; font-size: 13px;
+    font-weight: 500; margin-bottom: 32px; transition: color 0.2s ease;
+  }
+  .back-link:hover { color: var(--accent); }
+
+  .post-meta {
+    font-size: 12px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+  }
+  .post-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(34px, 5vw, 48px);
+    line-height: 1.15; letter-spacing: -1px;
+    margin-bottom: 24px;
+  }
+  .post-byline {
+    font-size: 14px; color: var(--text-muted); font-weight: 500;
+    margin-bottom: 56px; padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .post-byline strong { color: var(--text-primary); font-weight: 600; }
+
+  .post-body { font-size: 17px; color: var(--text-secondary); font-weight: 300; }
+  .post-body p { margin-bottom: 22px; line-height: 1.75; }
+  .post-body h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px; color: var(--text-primary);
+    margin-top: 48px; margin-bottom: 18px;
+    letter-spacing: -0.4px;
+  }
+  .post-body strong { color: var(--text-primary); font-weight: 600; }
+  .post-body em { font-style: italic; }
+  .post-body blockquote {
+    border-left: 3px solid var(--accent);
+    padding: 4px 20px; margin: 28px 0;
+    color: var(--text-primary); font-weight: 500;
+    background: var(--accent-light);
+    border-radius: 0 8px 8px 0;
+  }
+  .post-body hr {
+    border: none; border-top: 1px solid var(--border);
+    margin: 48px 0;
+  }
+
+  .post-footer {
+    margin-top: 64px; padding-top: 32px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  .post-footer p {
+    font-size: 14px; color: var(--text-muted); margin-bottom: 16px;
+  }
+  .post-footer a {
+    display: inline-block; padding: 12px 28px; border-radius: 100px;
+    background: var(--accent); color: white; text-decoration: none;
+    font-size: 14px; font-weight: 600; transition: all 0.3s ease;
+  }
+  .post-footer a:hover {
+    background: var(--accent-dark); transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+  }
+
+  footer {
+    text-align: center; padding: 32px; border-top: 1px solid var(--border);
+    font-size: 13px; color: var(--text-muted);
+  }
+
+  @media (max-width: 768px) {
+    nav .nav-links { display: none; }
+    article { padding: 48px 20px 80px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="logo">RY</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#about">About</a></li>
+      <li><a href="../index.html#skills">Skills</a></li>
+      <li><a href="../index.html#experience">Experience</a></li>
+      <li><a href="index.html">Blog</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<article>
+  <a href="index.html" class="back-link">&larr; All posts</a>
+
+  <div class="post-meta">Essay &middot; April 17, 2026</div>
+  <h1 class="post-title">Claude direct vs. Bedrock: a lock-in problem in disguise</h1>
+  <div class="post-byline">by <strong>Ramya Yalamarthi</strong> &middot; 2 min read</div>
+
+  <div class="post-body">
+    <p>Six months in, I keep hearing the same sentence from teams building on Claude: <em>"I wish we'd made the Bedrock vs direct API decision differently."</em></p>
+
+    <p>It's never about latency. It's about discovering &mdash; once the model is wired into authentication, observability, and the retry loop &mdash; that the comparison table they optimized against wasn't measuring the decision they were actually making.</p>
+
+    <p>Most teams pick this in an afternoon. The ones who redo it spend a quarter.</p>
+
+    <h2>The feature bake-off is a decoy</h2>
+
+    <p>Every comparison post lines up the same columns: cost per token, first-token latency, IAM support, observability integration.</p>
+
+    <p>Fine tables. Wrong frame.</p>
+
+    <p>You aren't picking features. You're picking which organization &mdash; Anthropic or AWS &mdash; gets to own the substrate of a system you plan to run for years. The feature list is what they hand you <em>today</em>. The lock-in is what you inherit forever.</p>
+
+    <h2>Two lock-ins, priced differently</h2>
+
+    <p><strong>Direct API lock-in is Anthropic.</strong> Their pricing model. Their deprecation timeline. Their rate limits. Their TOS. All negotiable only to the degree they choose.</p>
+
+    <p><strong>Bedrock lock-in is AWS.</strong> Their primitives &mdash; IAM, VPC, KMS, CloudTrail, AgentCore, SigV4. Their release cadence (Bedrock lags direct by weeks on new Claude features). Their regional rollout. Their margin.</p>
+
+    <p>Neither is worse. Both are real. The useful question isn't <em>which lock-in exists</em> &mdash; it's <em>which one you've already paid for.</em></p>
+
+    <h2>The heuristic</h2>
+
+    <p>If your company lives on AWS, Bedrock lock-in is already paid. You made that bet years ago, and the new integration inherits governance you've already built. Going direct adds a second strategic vendor to a stack that didn't have one.</p>
+
+    <p>If your company is multi-cloud or cloud-light, direct API means one vendor relationship instead of two. Walking away from Anthropic is painful but bounded. Walking away from AWS is a corporate event.</p>
+
+    <p>Same decision. Different answer. Environment makes the call.</p>
+
+    <h2>What I ask now</h2>
+
+    <p>When someone asks "Bedrock or direct?", I don't answer in tokens or milliseconds.</p>
+
+    <blockquote>What are you already locked into, and are you ready to make a second long-term bet?</blockquote>
+
+    <p>Pick the bet you can live with.</p>
+  </div>
+
+  <div class="post-footer">
+    <p>Thoughts or feedback on this post?</p>
+    <a href="../index.html#contact">Get in touch</a>
+  </div>
+</article>
+
+<footer>
+  <p>&copy; 2026 Ramya Yalamarthi. Built with care.</p>
+</footer>
+
+</body>
+</html>
